@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DotValue — Templates Annonces</title>
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --card-radius:12px;
+    --gap:16px;
+    --max-width:1100px;
+    --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  body{
+    margin:0;
+    font-family:var(--font-sans);
+    background:var(--bg);
+    color:#0b1b2b;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:28px;
+    display:flex;
+    justify-content:center;
+  }
+  .wrap{width:100%;max-width:var(--max-width);}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  header h1{font-size:20px;margin:0}
+  .controls{display:flex;gap:10px;align-items:center}
+  input[type="search"]{
+    padding:8px 12px;border-radius:10px;border:1px solid #d6dbe6;background:white;
+    min-width:220px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:var(--gap);
+  }
+
+  .card{
+    background:white;border-radius:var(--card-radius);box-shadow:0 6px 18px rgba(11,27,43,0.06);
+    overflow:hidden;border:1px solid rgba(10,20,30,0.04);
+    display:flex;flex-direction:column;
+  }
+
+  .card .head{
+    display:flex;align-items:center;padding:14px 16px;gap:12px;
+  }
+  .color-pill{
+    width:12px;height:48px;border-radius:6px 6px 6px 6px;flex-shrink:0;
+  }
+  .meta{
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .meta .title{font-weight:700;font-size:15px}
+  .meta .tagline{font-size:13px;color:#4b5b6b}
+
+  .body{padding:12px 16px;border-top:1px dashed rgba(10,20,30,0.03);flex:1;display:flex;flex-direction:column;gap:10px}
+  .desc{font-size:13px;color:#26384a;line-height:1.3}
+  .pill-row{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{padding:6px 10px;border-radius:999px;background:rgba(11,27,43,0.04);font-size:12px}
+  .template{background:#fbfdff;border-radius:8px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-size:13px;color:#0b1b2b;border:1px solid rgba(10,20,30,0.03)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  button{
+    border:0;padding:8px 10px;border-radius:8px;font-weight:600;cursor:pointer;background:#0a1a2f;color:white;
+  }
+  .btn-ghost{background:transparent;color:#0a1a2f;border:1px solid rgba(10,20,30,0.06)}
+  .small{padding:6px 8px;font-size:13px;border-radius:8px}
+  .preview{
+    margin-top:8px;padding:10px;border-radius:8px;background:#fff;border:1px solid rgba(10,20,30,0.02);font-size:14px;white-space:pre-wrap;
+  }
+
+  footer{margin-top:16px;font-size:13px;color:#556978}
+  .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:#eef2f7}
+  .copy-notif{
+    position:fixed;right:18px;bottom:18px;background:#0a1a2f;color:white;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(10,20,30,0.2);
+    transform:translateY(100px);opacity:0;transition:all .28s ease;z-index:9999
+  }
+  .copy-notif.show{transform:translateY(0);opacity:1}
+  @media (max-width:420px){
+    header{flex-direction:column;align-items:flex-start;gap:10px}
+    .controls{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>DotValue — Modèles d'annonces (aperçu)</h1>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Rechercher type, mot-clé..." />
+      <div class="tag">6 templates • prêt à copier</div>
+    </div>
+  </header>
+
+  <main class="grid" id="grid">
+    <!-- Les cartes sont générées par JS -->
+  </main>
+
+  <footer>
+    Structure de base pour chaque annonce : <strong>Titre</strong> • <strong>Introduction courte</strong> • <strong>Point clés</strong> (3 bullets) • <strong>Call-to-action</strong> (ex. "Lire", "Tester", "Voir la démo") • <strong>Hashtags / Tags</strong> • <strong>Durée / Format</strong>.
+  </footer>
+</div>
+
+<div id="notif" class="copy-notif" aria-hidden="true">Copié dans le presse-papiers</div>
+
+<script>
+/* Données des templates — basées sur votre description */
+const templates = [
+  {
+    id: 'actu-tech',
+    title: 'ACTU TECH – DotValue News',
+    color: '#1E88E5',
+    emoji:'📡',
+    tagline:'Actus du jour — rapide, précis, fiable',
+    desc:'Actus du jour, innovations majeures, mises à jour importantes, tendances qui font bouger la tech.',
+    rhythm:'Rapide • Court',
+    sample: {
+      telegram: `🔥 *DotValue News — Actu du jour*\n\n• Innovation : ...\n• Mise à jour : ...\n• Tendances : ...\n\n🔗 [Lire la source](URL)\n#DotValue #ActuTech`,
+      whatsapp: `🔥 DotValue News — Actu du jour\n\n• Innovation : ...\n• Mise à jour : ...\n• Tendances : ...\n\nLien : URL\n#DotValue #ActuTech`
+    },
+    tags:['actualité','innovation','tendances']
+  },
+  {
+    id: 'tuto-rapide',
+    title: 'TUTORIEL RAPIDE – DotValue Tips',
+    color: '#FFC300',
+    emoji:'💡',
+    tagline:'Mini-guide express (30–60 s)',
+    desc:'Mini-guide express : astuce app, optimisation PC, IA, gain de temps.',
+    rhythm:'Très court • 30–60 sec',
+    sample:{
+      telegram:`💡 *DotValue Tips — Astuce express*\n\n1) Étape 1 : ...\n2) Étape 2 : ...\n\n➡️ Astuce : appliquer maintenant.\n#DotValue #Tips`,
+      whatsapp:`💡 DotValue Tips — Astuce express\n\n1) Étape 1 : ...\n2) Étape 2 : ...\n\n➡️ Astuce : appliquer maintenant.\n#DotValue #Tips`
+    },
+    tags:['tutoriel','astuce','productivité']
+  },
+  {
+    id: 'appli-outil',
+    title: 'APPLI / OUTIL – DotValue Tools',
+    color: '#7E57C2',
+    emoji:'🧩',
+    tagline:'Zoom sur un outil — démo / capture',
+    desc:'Zoom sur un outil : IA, dev, design, productivité, cybersécurité. Format court + démo ou capture.',
+    rhythm:'Court • Démo/Capture',
+    sample:{
+      telegram:`🧩 *DotValue Tools — Outil du jour*\n\nNom : ...\nCe que ça fait : ...\nDémo : (court) URL\n\n#DotValue #Tools`,
+      whatsapp:`🧩 DotValue Tools — Outil du jour\n\nNom : ...\nCe que ça fait : ...\nDémo : URL\n\n#DotValue #Tools`
+    },
+    tags:['outil','démo','IA']
+  },
+  {
+    id: 'securite',
+    title: 'SÉCURITÉ NUMÉRIQUE – DotValue Secure',
+    color: '#00B894',
+    emoji:'🔒',
+    tagline:'Conseils cybersécurité — alertes',
+    desc:'Conseils cybersécurité, alertes arnaques, bonnes pratiques, failles à surveiller.',
+    rhythm:'Important • Préventif',
+    sample:{
+      telegram:`🔒 *DotValue Secure — Alerte / Conseil*\n\n❗ Risque : ...\n🛠 Que faire : ...\n\nRestez vigilant.\n#DotValue #Sécurité`,
+      whatsapp:`🔒 DotValue Secure — Alerte / Conseil\n\n❗ Risque : ...\n🛠 Que faire : ...\n\nRestez vigilant.\n#DotValue #Sécurité`
+    },
+    tags:['sécurité','alerte','conseil']
+  },
+  {
+    id: 'analyse',
+    title: 'ANALYSE / CONTENU LONG – DotValue DeepDive',
+    color: '#0A1A2F',
+    emoji:'📝',
+    tagline:'Analyse poussée, structuré et sérieux',
+    desc:'Analyse poussée : IA, société, régulation, futur du travail. Style structuré, expert, sérieux.',
+    rhythm:'Long • Structuré',
+    sample:{
+      telegram:`📝 *DotValue DeepDive — Analyse*\n\nRésumé : ...\nPoints clés :\n• ...\n• ...\n\n📚 Lire l\'analyse complète : URL\n#DotValue #DeepDive`,
+      whatsapp:`📝 DotValue DeepDive — Analyse\n\nRésumé : ...\nPoints clés :\n• ...\n• ...\n\nVoir : URL\n#DotValue #DeepDive`
+    },
+    tags:['analyse','long','expert']
+  },
+  {
+    id: 'decouvertes',
+    title: 'DÉCOUVERTES / CULTURE TECH – DotValue Explore',
+    color: '#ECECEC',
+    emoji:'🌐',
+    tagline:'Découverte, gadget, open-source',
+    desc:'Découverte d’un concept, gadget futuriste, projet open-source, innovation qui inspire.',
+    rhythm:'Inspiration • Curiosité',
+    sample:{
+      telegram:`🌐 *DotValue Explore — Découverte*\n\nSujet : ...\nPourquoi c'est cool : ...\nExemples : ...\n\n#DotValue #Explore`,
+      whatsapp:`🌐 DotValue Explore — Découverte\n\nSujet : ...\nPourquoi c'est cool : ...\nExemples : ...\n\n#DotValue #Explore`
+    },
+    tags:['culture','découverte','open-source']
+  }
+];
+
+/* Render cards */
+const grid = document.getElementById('grid');
+
+function makeCard(t){
+  const el = document.createElement('article');
+  el.className = 'card';
+  el.dataset.title = t.title.toLowerCase();
+  el.dataset.tags = t.tags.join(' ').toLowerCase();
+
+  el.innerHTML = `
+    <div class="head">
+      <div class="color-pill" style="background:${t.color}"></div>
+      <div class="meta">
+        <div class="title">${t.emoji} ${t.title}</div>
+        <div class="tagline">${t.tagline} · <span style="font-weight:600">${t.rhythm}</span></div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="desc">${t.desc}</div>
+      <div class="pill-row">
+        ${t.tags.map(x=>`<div class="pill">#${x}</div>`).join('')}
+      </div>
+      <div>
+        <div style="font-size:13px;color:#33485e;margin-bottom:6px">Structure recommandée :</div>
+        <div class="template" id="tmpl-${t.id}">${escapeHtml(t.sample.whatsapp)}</div>
+      </div>
+
+      <div class="actions">
+        <button class="small" data-action="preview" data-id="${t.id}">Prévisualiser</button>
+        <button class="small btn-ghost" data-action="copy-tele" data-id="${t.id}">Copier → Telegram</button>
+        <button class="small btn-ghost" data-action="copy-whats" data-id="${t.id}">Copier → WhatsApp</button>
+        <button class="small btn-ghost" data-action="edit" data-id="${t.id}">Modifier le template</button>
+      </div>
+
+      <div class="preview" id="preview-${t.id}" aria-live="polite" style="display:none"></div>
+    </div>
+  `;
+  return el;
+}
+
+function renderAll(){
+  grid.innerHTML = '';
+  templates.forEach(t=>grid.appendChild(makeCard(t)));
+}
+renderAll();
+
+/* Helpers */
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* Events */
+document.addEventListener('click', async (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const action = btn.dataset.action;
+  const id = btn.dataset.id;
+  const t = templates.find(x=>x.id===id);
+  if(!t) return;
+
+  if(action==='preview'){
+    const node = document.getElementById('preview-'+id);
+    node.style.display = 'block';
+    node.textContent = `-- Aperçu (WhatsApp) --\n\n${t.sample.whatsapp}\n\n-- Aperçu (Telegram Markdown) --\n\n${t.sample.telegram}`;
+    return;
+  }
+  if(action==='copy-tele' || action==='copy-whats'){
+    const txt = (action==='copy-tele')? t.sample.telegram : t.sample.whatsapp;
+    await copyToClipboard(txt);
+    showNotif('Copié pour ' + ((action==='copy-tele')? 'Telegram' : 'WhatsApp'));
+    return;
+  }
+  if(action==='edit'){
+    const tmplNode = document.getElementById('tmpl-'+id);
+    const current = (templates.find(x=>x.id===id).sample.whatsapp) || '';
+    const updated = prompt('Modifier le template (texte brut) :', current);
+    if(updated===null) return;
+    templates.find(x=>x.id===id).sample.whatsapp = updated;
+    templates.find(x=>x.id===id).sample.telegram = updated.replace(/\[(.*?)\]\((.*?)\)/g, '[$1]($2)'); // keep same by default
+    tmplNode.textContent = updated;
+    showNotif('Template mis à jour');
+    return;
+  }
+});
+
+async function copyToClipboard(text){
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(text);
+      return true;
+    } else {
+      const ta = document.createElement('textarea'); ta.value = text;
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      return true;
+    }
+  }catch(e){
+    console.error('copy failed',e);
+    alert('Impossible de copier automatiquement — sélectionnez et copiez manuellement.');
+    return false;
+  }
+}
+
+/* Search */
+document.getElementById('search').addEventListener('input', (ev)=>{
+  const q = ev.target.value.trim().toLowerCase();
+  Array.from(grid.children).forEach(card=>{
+    const title = card.dataset.title;
+    const tags = card.dataset.tags;
+    if(!q || title.includes(q) || tags.includes(q)) card.style.display = '';
+    else card.style.display = 'none';
+  });
+});
+
+/* Notification */
+const notif = document.getElementById('notif');
+let notifTimer = null;
+function showNotif(text){
+  notif.textContent = text;
+  notif.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(()=>{notif.classList.remove('show')}, 2200);
+}
+
+/* Keyboard: Press "/" to focus search */
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='/' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+});
+</script>
+</body>
+</html>

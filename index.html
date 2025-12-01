@@ -216,7 +216,6 @@ function makeCard(t){
 
       <div class="actions">
         <button class="small" data-action="preview" data-id="${t.id}">Prévisualiser</button>
-        <button class="small btn-ghost" data-action="copy-tele" data-id="${t.id}">Copier → Telegram</button>
         <button class="small btn-ghost" data-action="copy-whats" data-id="${t.id}">Copier → WhatsApp</button>
         <button class="small btn-ghost" data-action="edit" data-id="${t.id}">Modifier le template</button>
       </div>
@@ -250,7 +249,6 @@ document.addEventListener('click', async (e)=>{
   if(action==='preview'){
     const node = document.getElementById('preview-'+id);
     node.style.display = 'block';
-    node.textContent = `-- Aperçu (WhatsApp) --\n\n${t.sample.whatsapp}\n\n-- Aperçu (Telegram Markdown) --\n\n${t.sample.telegram}`;
     return;
   }
   if(action==='copy-tele' || action==='copy-whats'){
